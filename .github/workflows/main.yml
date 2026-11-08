@@ -1,0 +1,21 @@
+name: Build macOS App with Nativefier
+on: [workflow_dispatch] # Triggers manually via a button in the browser
+
+jobs:
+  build-mac:
+    # Uses a macOS cloud server to preserve native file permissions
+    runs-on: macos-15-intel
+    steps:
+      - name: Create App with Nativefier
+        run: |
+          npx nativefier "https://youtube.com" --name "YouTube" --platform "mac"
+          
+      - name: Compress App Folder to ZIP
+        run: |
+          zip -r YouTube-macOS.zip ./*-darwin-*/
+          
+      - name: Upload Finished Mac App
+        uses: actions/upload-artifact@v4
+        with:
+          name: YouTube
+          path: Youtube.zip
